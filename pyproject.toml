@@ -1,0 +1,40 @@
+[build-system]
+requires = ["setuptools>=64", "setuptools-scm>=8"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "ha-media-watchdog"
+dynamic = ["version"]
+description = "Add your description here"
+readme = "README.md"
+requires-python = ">=3.12"
+dependencies = [
+    "homeassistant-api>=4.2.2.post2",
+    "pyyaml>=6.0.2",
+    "rv-script-utils>=0.1.0",
+]
+license = {file = "LICENSE"}
+
+[project.scripts]
+ha-media-watchdog = "ha_watchdog_libs:main_cli"
+
+[project.urls]
+Homepage = "https://github.com/rveachkc/ha-media-watchdog"
+
+[tool.uv]
+dev-dependencies = [
+    "pytest>=8.3.3",
+    "ruff>=0.7.3",
+]
+
+[tool.pytest.ini_options]
+pythonpath = [
+  "src/"
+]
+addopts = "-ra -q"
+testpaths = [
+    "tests",
+]
+
+[tool.setuptools_scm]
+local_scheme = "no-local-version"
