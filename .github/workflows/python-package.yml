@@ -67,11 +67,25 @@ jobs:
         name: python-package-whl
         path: dist/*.whl
 
-    - name: upload sdist
+    - name: built artifacts
       uses: actions/upload-artifact@v4
       with:
-        name: python-package-sdist
-        path: dist/*.tar.gz
+        name: python-package-distributions
+        path: dist/
+
+
+  publish-to-pypi:
+    name: >-
+      Publish Python 🐍 distribution 📦 to PyPI
+    if: startsWith(github.ref, 'refs/tags/')  # only publish to PyPI on tag pushes
+    needs:
+      - build
+    runs-on: ubuntu-latest
+    environment:
+      name: pypi
+      url: https://pypi.org/p/ha-media-watchdog
+    permissions:
+      id-token: write
 
 
   compile:
