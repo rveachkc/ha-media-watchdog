@@ -61,11 +61,18 @@ jobs:
     - name: Build dist
       run: uv build
 
-    - name: built artifacts
+    - name: upload wheel
       uses: actions/upload-artifact@v4
       with:
-        name: python-package-distributions
-        path: dist/
+        name: python-package-whl
+        path: dist/*.whl
+
+    - name: upload sdist
+      uses: actions/upload-artifact@v4
+      with:
+        name: python-package-sdist
+        path: dist/*.tar.gz
+
 
   compile:
     name: nuitka compile
@@ -75,8 +82,15 @@ jobs:
       - build
     steps:
 
-      - name: Install uv
-        uses: astral-sh/setup-uv@v3
+      - name: Download a single artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: python-package-whl
 
-      - name: Build dist
-        run: uv run python -m nuitka ha-media-watchdog
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.13'
+
+
+      - run: ls -lR
