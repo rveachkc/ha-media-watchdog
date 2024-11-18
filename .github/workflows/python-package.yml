@@ -95,7 +95,7 @@ jobs:
 
       - run: pip install ha_media_watchdog*.whl
       - run: pip install nuitka
-      - run: python -m nuitka $(which ha-media-watchdog) --clang --recurse-all
+      - run: python -m nuitka $(which ha-media-watchdog) --clang --standalone
 
       - name: upload binary executable
         uses: actions/upload-artifact@v4
