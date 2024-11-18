@@ -93,4 +93,6 @@ jobs:
           python-version: '3.13'
 
 
-      - run: ls -lR
+      - run: pip install ha_media_watchdog*.whl
+      - run: which ha-media-watchdog
+      - run: pip install nuitka
