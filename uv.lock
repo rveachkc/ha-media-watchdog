@@ -224,7 +224,7 @@ wheels = [
 
 [[package]]
 name = "ha-media-watchdog"
-version = "0.1.dev3"
+version = "0.1.dev5"
 source = { editable = "." }
 dependencies = [
     { name = "homeassistant-api" },
