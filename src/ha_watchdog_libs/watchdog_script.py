@@ -3,7 +3,7 @@ from typing import Self, Union
 import yaml
 from rv_script_lib import ScriptBase
 import homeassistant_api
-
+from requests.exceptions import ConnectionError
 from ha_watchdog_libs.watchdog_rules import WatchdogRule
 
 class ApiTokenMissing(Exception):
@@ -113,12 +113,6 @@ class HaMediaWatchdog(ScriptBase):
             )
 
             self.media_player_services.select_source(entity_id=player_entity_id, source="Home")
-            # print(dir(player))
-            # import pprint
-            # pprint.pprint(player.dict())
-
-
-
 
 
     def runJob(self: Self):
@@ -139,29 +133,22 @@ class HaMediaWatchdog(ScriptBase):
 
         self.rules = [WatchdogRule(**x) for x in config_data.get("rules", [])]
 
-        self.media_player_services = self.client.get_domain("media_player")
 
-        # import pprint
-        # pprint.pprint(self.media_player_services)
-
-        # for svc_name, svc in self.media_player_services.services.items():
-        #     print(svc_name, svc.description)
-
+        try:
+            self.media_player_services = self.client.get_domain("media_player")
+        except ConnectionError:
+            self.log.warning("Unable to connect to Home Assistant")
+            return None
 
         entities = self.client.get_entities()
 
-        # pprint.pprint(entities)
-
         mp = entities.get("media_player")
 
-        # print(mp)
-        # print(type(mp))
+        if not mp.entities:
+            self.log.warning("Zero Entities returned. Is Home Assistant Down?")
+            return None
 
         for mpn, mpi in mp.entities.items():
             self.log.debug("found entity", name=mpn)
 
             self.checkPlayer(mpi)
-
-        # br_roku = mp.entities.get("bedroom_roku_stick")
-
-        # self.checkPlayer(br_roku)
