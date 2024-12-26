@@ -2,20 +2,18 @@ from typing import Self
 from unittest import TestCase
 from ha_watchdog_libs.watchdog_rules import WatchdogRule
 
-class TestRuleAppliesBasic(TestCase):
 
+class TestRuleAppliesBasic(TestCase):
     def testBasicRule(self: Self):
         """
         With no inputs, this should apply to everything.
         """
         wr = WatchdogRule(name="TestRule", action="warn")
 
-        self.assertTrue(
-            wr.rule_applies(entity_id="my_cool_roku", source_name="rv_tv")
-        )
+        self.assertTrue(wr.rule_applies(entity_id="my_cool_roku", source_name="rv_tv"))
+
 
 class TestRuleAppliesScenarios(TestCase):
-
     KIDS_TV = "media_player.kids_watch_this_tv"
     ADULT_TV = "media_player.adult_only_tv"
 

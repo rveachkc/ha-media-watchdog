@@ -18,33 +18,25 @@ class TestInteralBasic(TestCase):
     )
 
     def test_data_types(self: Self):
-
         self.assertIsInstance(self.WI.end_obj, datetime.time)
         self.assertIsInstance(self.WI.start_obj, datetime.time)
         self.assertIsInstance(self.WI.days, set)
         self.assertEqual(len(self.WI.days), 0)
 
-
     @freeze_time("2024-12-26 21:30")
     def test_expect_positive(self: Self):
-
         self.assertTrue(self.WI.is_active())
-
 
     @freeze_time("2024-12-26 12:30")
     def test_expect_negative(self: Self):
-
         self.assertFalse(self.WI.is_active())
 
     @freeze_time("2024-12-26 21:00")
     def test_edge_begin(self: Self):
-
         self.assertTrue(self.WI.is_active())
-
 
     @freeze_time("2024-12-26 22:00")
     def test_edge_end(self: Self):
-
         self.assertTrue(self.WI.is_active())
 
 
@@ -59,28 +51,22 @@ class TestInteralUntilMidnight(TestCase):
     )
 
     def test_data_types(self: Self):
-
         self.assertIsInstance(self.WI.end_obj, datetime.time)
         self.assertEqual(self.WI.end_obj, datetime.time.max)
         self.assertIsInstance(self.WI.start_obj, datetime.time)
         self.assertIsInstance(self.WI.days, set)
         self.assertEqual(len(self.WI.days), 0)
 
-
     @freeze_time("2024-12-26 23:30")
     def test_expect_positive(self: Self):
-
         self.assertTrue(self.WI.is_active())
-
 
     @freeze_time("2024-12-26 12:30")
     def test_expect_negative(self: Self):
-
         self.assertFalse(self.WI.is_active())
 
     @freeze_time("2024-12-26 23:59")
     def test_edge_begin(self: Self):
-
         self.assertTrue(self.WI.is_active())
 
 
@@ -95,11 +81,10 @@ class TestWithWeekdays(TestCase):
         days=[
             "Mon",
             "Tuesday",
-        ]
+        ],
     )
 
     def test_data_types(self: Self):
-
         self.assertIsInstance(self.WI.end_obj, datetime.time)
         self.assertEqual(self.WI.end_obj, datetime.time.max)
         self.assertIsInstance(self.WI.start_obj, datetime.time)
@@ -114,7 +99,6 @@ class TestWithWeekdays(TestCase):
     def test_mon_noon(self: Self):
         self.assertFalse(self.WI.is_active())
 
-
     @freeze_time("2024-12-23 23:00")
     def test_mon_2300(self: Self):
         self.assertTrue(self.WI.is_active())
@@ -123,7 +107,6 @@ class TestWithWeekdays(TestCase):
     def test_tue_noon(self: Self):
         self.assertFalse(self.WI.is_active())
 
-
     @freeze_time("2024-12-24 23:00")
     def test_tue_2300(self: Self):
         self.assertTrue(self.WI.is_active())
@@ -131,7 +114,6 @@ class TestWithWeekdays(TestCase):
     @freeze_time("2024-12-25 12:00")
     def test_wed_noon(self: Self):
         self.assertFalse(self.WI.is_active())
-
 
     @freeze_time("2024-12-25 23:00")
     def test_wed_2300(self: Self):

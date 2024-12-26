@@ -6,11 +6,12 @@ import homeassistant_api
 from requests.exceptions import ConnectionError
 from ha_watchdog_libs.watchdog_rules import WatchdogRule
 
+
 class ApiTokenMissing(Exception):
     None
 
-class HaMediaWatchdog(ScriptBase):
 
+class HaMediaWatchdog(ScriptBase):
     ACTION_WARN = "warn"
     ACTION_STOP = "stop"
     ACTION_HOME = "home"
@@ -18,19 +19,18 @@ class HaMediaWatchdog(ScriptBase):
     PARSER_VERBOSITY_CONFIG = "count"
 
     def extraArgs(self: Self):
-
         self.parser.add_argument("config", type=str, help="config file")
 
     @staticmethod
-    def getPlayerRuleAction(entity_id: str, source_name: str, rule: WatchdogRule) -> Union[str, None]:
-
+    def getPlayerRuleAction(
+        entity_id: str, source_name: str, rule: WatchdogRule
+    ) -> Union[str, None]:
         if rule.rule_applies(entity_id=entity_id, source_name=source_name):
             return rule.action
 
         return None
 
     def checkPlayer(self: Self, player: homeassistant_api.models.entity.Entity):
-
         player_friendly_name = player.state.attributes.get("friendly_name")
         player_entity_id = player.state.entity_id
         player_source_name = player.state.attributes.get("source")
@@ -83,14 +83,13 @@ class HaMediaWatchdog(ScriptBase):
                     filter(
                         lambda y: y[1] == x,
                         rule_checks,
-                    )
+                    ),
                 ),
             )
             for x in rule_actions
         }
 
         if self.ACTION_WARN in rule_actions:
-
             self.log.warning(
                 "Media Watchdog Detection",
                 action=self.ACTION_WARN,
@@ -100,9 +99,7 @@ class HaMediaWatchdog(ScriptBase):
                 rules=rule_action_dict.get(self.ACTION_WARN),
             )
 
-
         if self.ACTION_HOME in rule_actions:
-
             self.log.warning(
                 "Media Watchdog Detection",
                 action=self.ACTION_HOME,
@@ -112,17 +109,19 @@ class HaMediaWatchdog(ScriptBase):
                 rules=rule_action_dict.get(self.ACTION_HOME),
             )
 
-            self.media_player_services.select_source(entity_id=player_entity_id, source="Home")
-
+            self.media_player_services.select_source(
+                entity_id=player_entity_id, source="Home"
+            )
 
     def runJob(self: Self):
-
         with open(self.args.config, "r") as config_fd:
             config_data = yaml.safe_load(config_fd)
 
         self.token = os.getenv("HOMEASSISTANT_TOKEN")
         if self.token is None:
-            raise ApiTokenMissing("The HOMEASSISTANT_TOKEN environment variable must be set")
+            raise ApiTokenMissing(
+                "The HOMEASSISTANT_TOKEN environment variable must be set"
+            )
 
         self.client = homeassistant_api.Client(
             config_data.get("api_url"),
@@ -132,7 +131,6 @@ class HaMediaWatchdog(ScriptBase):
         self.log.info("HomeAssistant Client Configured", api_url=self.client.api_url)
 
         self.rules = [WatchdogRule(**x) for x in config_data.get("rules", [])]
-
 
         try:
             self.media_player_services = self.client.get_domain("media_player")
