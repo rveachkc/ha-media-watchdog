@@ -1,0 +1,26 @@
+---
+
+api_url: https://zoe.veach.tech/api
+
+rules:
+
+  - name: TestIntervalRule
+    action: warn
+    sources:
+      - Funny Stuff that'll keep them laughing all night
+    entity_ids:
+      - media_player.kids_watch_this_tv
+    intervals:
+      - start_time: "21:00"
+        end_time: "24:00"
+        days:
+          - sun
+          - mon
+          - tue
+          - wed
+          - thu
+      - start_time: "22:00"
+        end_time: "24:00"
+        days:
+          - friday
+          - saturday
