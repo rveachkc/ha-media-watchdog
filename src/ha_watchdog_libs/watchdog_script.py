@@ -113,9 +113,18 @@ class HaMediaWatchdog(ScriptBase):
                 entity_id=player_entity_id, source="Home"
             )
 
-    def runJob(self: Self):
-        with open(self.args.config, "r") as config_fd:
+    @staticmethod
+    def read_config_from_file(config_path: str):
+        with open(config_path, "r") as config_fd:
             config_data = yaml.safe_load(config_fd)
+
+        api_url = config_data.get("api_url")
+        rules = [WatchdogRule(**x) for x in config_data.get("rules", [])]
+
+        return api_url, rules
+
+    def runJob(self: Self):
+        api_url, self.rules = self.read_config_from_file(self.args.config)
 
         self.token = os.getenv("HOMEASSISTANT_TOKEN")
         if self.token is None:
@@ -124,13 +133,11 @@ class HaMediaWatchdog(ScriptBase):
             )
 
         self.client = homeassistant_api.Client(
-            config_data.get("api_url"),
+            api_url,
             self.token,
         )
 
         self.log.info("HomeAssistant Client Configured", api_url=self.client.api_url)
-
-        self.rules = [WatchdogRule(**x) for x in config_data.get("rules", [])]
 
         try:
             self.media_player_services = self.client.get_domain("media_player")

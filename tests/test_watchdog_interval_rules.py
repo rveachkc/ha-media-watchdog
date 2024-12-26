@@ -16,6 +16,7 @@ class TestIntervalRule(TestCase):
         name="TestIntervalRule",
         action="warn",
         sources=[WIND_UP_SHOWS],
+        entity_ids=[KIDS_TV],
         intervals=[
             WatchdogInterval(
                 start_time="21:00",
