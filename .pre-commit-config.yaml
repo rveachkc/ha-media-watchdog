@@ -3,8 +3,9 @@ repos:
   - repo: https://github.com/charliermarsh/ruff-pre-commit
     rev: v0.7.1  # Use the latest stable release
     hooks:
-      - id: ruff
-        args: ["--fix"]  # Enable ruff to fix formatting issues
+      - id: ruff # run the linter
+        stages: [commit]  # Only run on staged files
+      - id: ruff-format # run the formmatter
         stages: [commit]  # Only run on staged files
 
   - repo: https://github.com/pre-commit/pre-commit-hooks
