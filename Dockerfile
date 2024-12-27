@@ -4,3 +4,5 @@ ENV DEBIAN_FRONTEND=noninteractive
 
 COPY dist/*.whl /app/
 RUN pip install --no-cache-dir /app/*.whl
+
+ENTRYPOINT ["ha-media-watchdog"]
