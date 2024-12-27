@@ -1,5 +1,5 @@
-from typing import Self, Literal, Optional, Union
 from dataclasses import dataclass, field
+from typing import Literal, Optional, Self, Union
 
 from ha_watchdog_libs.watchdog_intervals import WatchdogInterval
 
