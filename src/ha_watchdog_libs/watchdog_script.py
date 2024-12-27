@@ -1,9 +1,13 @@
 import os
 from typing import Self, Union
-import yaml
-from rv_script_lib import ScriptBase
+from urllib.parse import urlparse
+
 import homeassistant_api
+import yaml
+from prometheus_client import Counter, Gauge
 from requests.exceptions import ConnectionError
+from rv_script_lib import ScriptBase
+
 from ha_watchdog_libs.watchdog_rules import WatchdogRule
 
 
@@ -16,10 +20,27 @@ class HaMediaWatchdog(ScriptBase):
     ACTION_STOP = "stop"
     ACTION_HOME = "home"
 
+    PARSER_INCLUDE_REPEAT_OPTIONS = True
     PARSER_VERBOSITY_CONFIG = "count"
+    PROM_METRIC_PREFIX = "watchdog"
 
     def extraArgs(self: Self):
         self.parser.add_argument("config", type=str, help="config file")
+
+    def extraMetrics(self: Self):
+        self.prom_action_count = Counter(
+            f"{self.PROM_METRIC_PREFIX}_action",
+            "Count of actions taken",
+            ["action", "entity", "source", "api_host"],
+            registry=self.prom_registry,
+        )
+
+        self.prom_rules_loaded = Gauge(
+            f"{self.PROM_METRIC_PREFIX}_rules_loaded",
+            "Number of rules loaded for processing",
+            ["api_url", "api_host"],
+            registry=self.prom_registry,
+        )
 
     @staticmethod
     def getPlayerRuleAction(
@@ -90,6 +111,12 @@ class HaMediaWatchdog(ScriptBase):
         }
 
         if self.ACTION_WARN in rule_actions:
+            self.prom_action_count.labels(
+                self.ACTION_WARN,
+                player_entity_id,
+                player_source_name,
+                urlparse(self.client.api_url).netloc,
+            ).inc()
             self.log.warning(
                 "Media Watchdog Detection",
                 action=self.ACTION_WARN,
@@ -100,6 +127,12 @@ class HaMediaWatchdog(ScriptBase):
             )
 
         if self.ACTION_HOME in rule_actions:
+            self.prom_action_count.labels(
+                self.ACTION_HOME,
+                player_entity_id,
+                player_source_name,
+                urlparse(self.client.api_url).netloc,
+            ).inc()
             self.log.warning(
                 "Media Watchdog Detection",
                 action=self.ACTION_HOME,
@@ -137,7 +170,10 @@ class HaMediaWatchdog(ScriptBase):
             self.token,
         )
 
-        self.log.info("HomeAssistant Client Configured", api_url=self.client.api_url)
+        self.log.debug("HomeAssistant Client Configured", api_url=self.client.api_url)
+        self.prom_rules_loaded.labels(
+            self.client.api_url, urlparse(self.client.api_url).netloc
+        ).set(len(self.rules))
 
         try:
             self.media_player_services = self.client.get_domain("media_player")
