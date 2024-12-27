@@ -103,7 +103,7 @@ jobs:
 
 
   docker:
-    if: github.ref == 'refs/heads/main' || github.ref == 'refs/heads/docker-dev' || startsWith(github.ref, 'refs/tags/')
+    if: github.ref == 'refs/heads/main' || startsWith(github.ref, 'refs/tags/')
     runs-on: ubuntu-latest
     environment: docker_hub
     needs:
