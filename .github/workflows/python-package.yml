@@ -104,6 +104,7 @@ jobs:
 
   docker:
     runs-on: ubuntu-latest
+    environment: docker_hub
     needs:
       - build
     steps:
