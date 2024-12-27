@@ -1,12 +1,11 @@
 import os
 import pprint
-
 from typing import Self
 from unittest import TestCase, mock
 
-from ha_watchdog_libs.watchdog_script import HaMediaWatchdog
-from ha_watchdog_libs.watchdog_rules import WatchdogRule
 from ha_watchdog_libs.watchdog_intervals import WatchdogInterval
+from ha_watchdog_libs.watchdog_rules import WatchdogRule
+from ha_watchdog_libs.watchdog_script import HaMediaWatchdog
 
 HERE = os.path.dirname(__file__)
 CONFIG_FILE = os.path.join(HERE, "test_configs", "test_config_file.yml")

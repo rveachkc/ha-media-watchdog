@@ -3,8 +3,8 @@ from unittest import TestCase
 
 from freezegun import freeze_time
 
-from ha_watchdog_libs.watchdog_rules import WatchdogRule
 from ha_watchdog_libs.watchdog_intervals import WatchdogInterval
+from ha_watchdog_libs.watchdog_rules import WatchdogRule
 
 
 class TestIntervalRule(TestCase):

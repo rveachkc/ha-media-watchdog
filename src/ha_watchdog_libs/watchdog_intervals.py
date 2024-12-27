@@ -1,7 +1,7 @@
 import datetime
-from calendar import day_name, day_abbr
+from calendar import day_abbr, day_name
 from dataclasses import dataclass, field
-from typing import Optional, Self, Iterable
+from typing import Iterable, Optional, Self
 
 
 def parse_time(time_str: str) -> datetime.time:

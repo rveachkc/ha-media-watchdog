@@ -1,5 +1,6 @@
 from typing import Self
 from unittest import TestCase
+
 from ha_watchdog_libs.watchdog_rules import WatchdogRule
 
 

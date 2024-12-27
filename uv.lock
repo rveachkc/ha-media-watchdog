@@ -233,7 +233,7 @@ wheels = [
 
 [[package]]
 name = "ha-media-watchdog"
-version = "0.1.1.dev2"
+version = "0.1.1.dev9"
 source = { editable = "." }
 dependencies = [
     { name = "homeassistant-api" },
@@ -583,7 +583,7 @@ wheels = [
 
 [[package]]
 name = "rv-script-utils"
-version = "0.2.0"
+version = "0.2.1"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
     { name = "prometheus-client" },
@@ -591,9 +591,9 @@ dependencies = [
     { name = "requests" },
     { name = "structlog" },
 ]
-sdist = { url = "https://files.pythonhosted.org/packages/d9/7a/22288ce114de5b0af29c0af79d7af8c7046a880fd108b1eb036e18755922/rv_script_utils-0.2.0.tar.gz", hash = "sha256:114874ed24bb1b0cae3b6d2bda6d0cfea6d0638270ee58e82b857c4bcb3aee82", size = 22383 }
+sdist = { url = "https://files.pythonhosted.org/packages/bc/81/b3588d3b00879e2de878cc9e8f45de7dcdf9c1a95165528ab5d3f85315b1/rv_script_utils-0.2.1.tar.gz", hash = "sha256:81acaf7a692808b894386e911220541aadb12b4e17918f4c33e375c8aae9b4cd", size = 22392 }
 wheels = [
-    { url = "https://files.pythonhosted.org/packages/63/5f/c7b774f40f40fae8221670587b1cb8b31736492e97722156b7239053d731/rv_script_utils-0.2.0-py3-none-any.whl", hash = "sha256:b3b935e51fc8227cecf9365502037e1e590616efefe162d75c053a2e46007b8f", size = 8862 },
+    { url = "https://files.pythonhosted.org/packages/19/7d/dbc8a4bfbcaf9ed0015f283dfa520604dfe7b7450ae3efb9d7882013d0b7/rv_script_utils-0.2.1-py3-none-any.whl", hash = "sha256:d770b9bc680dcbc7b6eb91a7137ad581f213019893a4f19837cb45c06eb6e78d", size = 8860 },
 ]
 
 [[package]]
