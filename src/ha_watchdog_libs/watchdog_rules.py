@@ -1,5 +1,5 @@
 from dataclasses import dataclass, field
-from typing import Literal, Optional, Self, Union
+from typing import Literal, Self
 
 from ha_watchdog_libs.watchdog_intervals import WatchdogInterval
 
@@ -8,14 +8,14 @@ from ha_watchdog_libs.watchdog_intervals import WatchdogInterval
 class WatchdogRule:
     name: str
     action: Literal["warn", "stop", "home"]
-    sources: Optional[list[str]] = field(default_factory=list)
-    sources_except: Optional[list[str]] = field(default_factory=list)
-    entity_ids: Optional[list[str]] = field(default_factory=list)
-    intervals: Optional[list[dict]] = field(default_factory=list)
+    sources: list[str] | None = field(default_factory=list)
+    sources_except: list[str] | None = field(default_factory=list)
+    entity_ids: list[str] | None = field(default_factory=list)
+    intervals: list[dict] | None = field(default_factory=list)
 
     @staticmethod
     def __dict_to_interval(
-        interval_in: Union[dict, WatchdogInterval],
+        interval_in: dict | WatchdogInterval,
     ) -> WatchdogInterval:
         """Helper function for the post init"""
         if isinstance(interval_in, dict):
