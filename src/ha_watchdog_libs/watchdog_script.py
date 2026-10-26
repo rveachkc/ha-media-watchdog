@@ -1,5 +1,5 @@
 import os
-from typing import Self, Union
+from typing import Self
 from urllib.parse import urlparse
 
 import homeassistant_api
@@ -45,7 +45,7 @@ class HaMediaWatchdog(ScriptBase):
     @staticmethod
     def getPlayerRuleAction(
         entity_id: str, source_name: str, rule: WatchdogRule
-    ) -> Union[str, None]:
+    ) -> str | None:
         if rule.rule_applies(entity_id=entity_id, source_name=source_name):
             return rule.action
 
@@ -179,7 +179,7 @@ class HaMediaWatchdog(ScriptBase):
             self.media_player_services = self.client.get_domain("media_player")
         except ConnectionError:
             self.log.warning("Unable to connect to Home Assistant")
-            return None
+            return
 
         entities = self.client.get_entities()
 
@@ -187,7 +187,7 @@ class HaMediaWatchdog(ScriptBase):
 
         if not mp.entities:
             self.log.warning("Zero Entities returned. Is Home Assistant Down?")
-            return None
+            return
 
         for mpn, mpi in mp.entities.items():
             self.log.debug("found entity", name=mpn)
