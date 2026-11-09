@@ -1,7 +1,8 @@
 import datetime
 from calendar import day_abbr, day_name
+from collections.abc import Iterable
 from dataclasses import dataclass, field
-from typing import Iterable, Optional, Self
+from typing import Self
 
 
 def parse_time(time_str: str) -> datetime.time:
@@ -19,10 +20,10 @@ def parse_time(time_str: str) -> datetime.time:
 class WatchdogInterval:
     start_time: str
     end_time: str
-    days: Optional[Iterable[str]] = field(default_factory=list)
+    days: Iterable[str] | None = field(default_factory=list)
 
-    start_obj: Optional[datetime.time] = field(init=False)
-    end_obj: Optional[datetime.time] = field(init=False)
+    start_obj: datetime.time | None = field(init=False)
+    end_obj: datetime.time | None = field(init=False)
 
     def __post_init__(self: Self):
         self.start_obj = parse_time(self.start_time)
